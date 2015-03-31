@@ -19,7 +19,9 @@
   },
   "devDependencies": {
     "grunt": "^0.4.5",
+    "grunt-mocha-chai-sinon": "0.0.8",
     "load-grunt-config": "^0.16.0",
+    "rewire": "^2.3.1",
     "time-grunt": "^1.1.0"
   }
 }
