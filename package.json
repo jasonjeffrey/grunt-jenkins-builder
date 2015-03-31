@@ -2,15 +2,19 @@
   "name": "grunt-jenkins-builder",
   "version": "1.0.0",
   "description": "a grunt task to init a jenkins build from grunt",
+  "scripts": {
+    "test": "grunt test"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/jasonjeffrey/grunt-jenkins-builder.git"
   },
-
   "author": "Jason Jeffrey",
   "bugs": {
     "url": "https://github.com/jasonjeffrey/grunt-jenkins-builder/issues"
   },
-
-  "homepage": "https://github.com/jasonjeffrey/grunt-jenkins-builder"
+  "homepage": "https://github.com/jasonjeffrey/grunt-jenkins-builder",
+  "dependencies": {
+    "jenkins-api": "^0.2.6"
+  }
 }

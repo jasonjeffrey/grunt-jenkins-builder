@@ -1,0 +1,12 @@
+language: node_js
+
+node_js:
+  - "0.12"
+
+branchs:
+  only:
+    - master
+    - develop
+
+before_install:
+  - npm install -g grunt-cli
