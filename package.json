@@ -16,5 +16,10 @@
   "homepage": "https://github.com/jasonjeffrey/grunt-jenkins-builder",
   "dependencies": {
     "jenkins-api": "^0.2.6"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "load-grunt-config": "^0.16.0",
+    "time-grunt": "^1.1.0"
   }
 }
