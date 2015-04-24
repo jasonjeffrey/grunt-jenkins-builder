@@ -2,7 +2,7 @@
 
 var task,
     jenkinsApi = require('jenkins-api'),
-    taskLocation = '../../../tasks/libs/jenkins-builder.js';
+    taskLocation = '../../../tasks/libs/jenkins-runner.js';
 
 describe('jenkins-builder task', function () {
   describe('initialisation', function () {
@@ -21,21 +21,23 @@ describe('jenkins-builder task', function () {
   });
 
   describe('startJenkinsBuild', function () {
-    var buildOptions = {
-          throwError: false
-        },
-        buildSpy = sinon.spy(function (jobName, params, callback) {
-          var err = null;
-
-          if (buildOptions.throwError) {
-            err = 'ERROR';
-          }
-
-          callback(err, 'test');
-        });
+    var buildOptions, buildSpy;
 
 
     beforeEach(function () {
+      buildOptions = {
+        throwError: false
+      },
+          buildSpy = sinon.spy(function (jobName, params, callback) {
+            var err = null;
+
+            if (buildOptions.throwError) {
+              err = 'ERROR';
+            }
+
+            callback(err, 'test');
+          });
+
       sinon.stub(jenkinsApi, 'init', function () {
         return {
           build: buildSpy
@@ -50,7 +52,7 @@ describe('jenkins-builder task', function () {
       delete require.cache[taskLocation]
     });
 
-    it('should connect to a jenkins server address passed in by grunt options - successfully', function () {
+    it('should connect to a jenkins server address passed in by grunt options without parameters- successfully', function () {
       var jenkinsUrl = 'http://example.com',
           jobName = 'testJob';
 
@@ -66,7 +68,7 @@ describe('jenkins-builder task', function () {
       expect(buildSpy.args[0][0]).to.equal(jobName);
     });
 
-    it('should connect to a jenkins server address passed in by grunt options - fail', function () {
+    it('should connect to a jenkins server address passed in by grunt options without parameters - fail', function () {
       var jenkinsUrl = 'http://example.com',
           errorSpy = sinon.spy(),
           jobName = 'testJob';
@@ -88,5 +90,28 @@ describe('jenkins-builder task', function () {
       expect(buildSpy.called).to.be.ok;
       expect(buildSpy.args[0][0]).to.equal(jobName);
     });
+
+    it('should connect to a jenkins server address passed in by grunt options with parameters - successfully', function () {
+      var jenkinsUrl = 'http://example.com',
+          jobName = 'testJob',
+          jobParameters = {
+            test: 1,
+            test2: 3
+          };
+
+      task.startJenkinsJob({}, {
+        'jenkinsUrl': jenkinsUrl,
+        'jobName': jobName,
+        'parameters': jobParameters
+      });
+
+      expect(jenkinsApi.init.called).to.be.ok;
+      expect(jenkinsApi.init.args[0][0]).to.equal(jenkinsUrl);
+
+      expect(buildSpy.called).to.be.ok;
+      expect(buildSpy.args[0][0]).to.equal(jobName);
+      expect(buildSpy.args[0][1]).to.equal(jobParameters);
+    });
+
   });
 });

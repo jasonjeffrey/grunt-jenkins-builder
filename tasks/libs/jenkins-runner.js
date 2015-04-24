@@ -6,7 +6,7 @@ var jenkins,
 exports.startJenkinsJob = function (grunt, options) {
   jenkins = jenkinsapi.init(options.jenkinsUrl);
 
-  jenkins.build(options.jobName, {}, function (err) {
+  jenkins.build(options.jobName, options.parameters, function (err) {
       if(err) {
         grunt.fail.fatal(err);
       }
