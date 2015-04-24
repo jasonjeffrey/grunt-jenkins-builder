@@ -54,7 +54,30 @@ describe('jenkins-builder task', function () {
       var jenkinsUrl = 'http://example.com',
           jobName = 'testJob';
 
+      task.startJenkinsJob({}, {
+        'jenkinsUrl': jenkinsUrl,
+        'jobName': jobName
+      });
+
+      expect(jenkinsApi.init.called).to.be.ok;
+      expect(jenkinsApi.init.args[0][0]).to.equal(jenkinsUrl);
+
+      expect(buildSpy.called).to.be.ok;
+      expect(buildSpy.args[0][0]).to.equal(jobName);
+    });
+
+    it('should connect to a jenkins server address passed in by grunt options - fail', function () {
+      var jenkinsUrl = 'http://example.com',
+          errorSpy = sinon.spy(),
+          jobName = 'testJob';
+
+      buildOptions = true;
+
       task.startJenkinsJob({
+        fail: {
+          fatal: errorSpy
+        }
+      }, {
         'jenkinsUrl': jenkinsUrl,
         'jobName': jobName
       });
