@@ -21,10 +21,11 @@ describe('jenkins-builder task', function () {
   });
 
   describe('startJenkinsBuild', function () {
-    var buildOptions, buildSpy;
+    var buildOptions, buildSpy, callbackSpy;
 
 
     beforeEach(function () {
+      callbackSpy = sinon.spy();
       buildOptions = {
         throwError: false
       },
@@ -59,7 +60,7 @@ describe('jenkins-builder task', function () {
       task.startJenkinsJob({}, {
         'jenkinsUrl': jenkinsUrl,
         'jobName': jobName
-      });
+      }, callbackSpy);
 
       expect(jenkinsApi.init.called).to.be.ok;
       expect(jenkinsApi.init.args[0][0]).to.equal(jenkinsUrl);
@@ -82,7 +83,7 @@ describe('jenkins-builder task', function () {
       }, {
         'jenkinsUrl': jenkinsUrl,
         'jobName': jobName
-      });
+      }, callbackSpy);
 
       expect(jenkinsApi.init.called).to.be.ok;
       expect(jenkinsApi.init.args[0][0]).to.equal(jenkinsUrl);
@@ -103,7 +104,7 @@ describe('jenkins-builder task', function () {
         'jenkinsUrl': jenkinsUrl,
         'jobName': jobName,
         'parameters': jobParameters
-      });
+      }, callbackSpy);
 
       expect(jenkinsApi.init.called).to.be.ok;
       expect(jenkinsApi.init.args[0][0]).to.equal(jenkinsUrl);
