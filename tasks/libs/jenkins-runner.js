@@ -13,7 +13,7 @@ exports.startJenkinsJob = function (grunt, options, callback) {
   };
 
   jenkins = jenkinsapi.init(options.jenkinsUrl);
-  
+
   if(options.parameters) {
     jenkins.build(options.jobName, options.parameters, onComplete);
   } else {

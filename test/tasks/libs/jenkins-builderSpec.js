@@ -36,7 +36,12 @@ describe('jenkins-builder task', function () {
               err = 'ERROR';
             }
 
-            callback(err, 'test');
+            if(typeof(params) === 'function') {
+              params(err, 'test');
+            } else {
+              callback(err, 'test');
+            }
+
           });
 
       sinon.stub(jenkinsApi, 'init', function () {
