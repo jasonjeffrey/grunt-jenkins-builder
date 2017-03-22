@@ -23,17 +23,17 @@ exports.startJenkinsJob = function (grunt, options, callback) {
 
     callback();
   },
-  url = options.jenkinsUrl;
+  url = options().jenkinsUrl;
 
-  if (options.auth) {
-    url = buildAuthUrl(url, options.auth.username, options.auth.password);
+  if (options().auth) {
+    url = buildAuthUrl(url, options().auth.username, options().auth.password);
   }
 
   jenkins = jenkinsapi.init(url);
 
-  if (options.parameters) {
-    jenkins.build(options.jobName, options.parameters, onComplete);
+  if (options().parameters) {
+    jenkins.build(options().jobName, options().parameters, onComplete);
   } else {
-    jenkins.build(options.jobName, onComplete);
+    jenkins.build(options().jobName, onComplete);
   }
 };
