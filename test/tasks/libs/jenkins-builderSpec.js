@@ -23,6 +23,11 @@ describe('jenkins-builder task', function () {
   describe('startJenkinsBuild', function () {
     var buildOptions, buildSpy, callbackSpy;
 
+    function createOptionsFunction(options) {
+      return function () {
+        return options;
+      }
+    }
 
     beforeEach(function () {
       callbackSpy = sinon.spy();
@@ -63,10 +68,10 @@ describe('jenkins-builder task', function () {
           var jenkinsUrl = 'http://example.com',
               jobName = 'testJob';
 
-          task.startJenkinsJob({}, {
+          task.startJenkinsJob({}, createOptionsFunction({
             'jenkinsUrl': jenkinsUrl,
             'jobName': jobName
-          }, callbackSpy);
+          }), callbackSpy);
 
           expect(jenkinsApi.init.called).to.be.ok;
           expect(jenkinsApi.init.args[0][0]).to.equal(jenkinsUrl);
@@ -86,10 +91,10 @@ describe('jenkins-builder task', function () {
         fail: {
           fatal: errorSpy
         }
-      }, {
+      }, createOptionsFunction({
         'jenkinsUrl': jenkinsUrl,
         'jobName': jobName
-      }, callbackSpy);
+      }), callbackSpy);
 
       expect(jenkinsApi.init.called).to.be.ok;
       expect(jenkinsApi.init.args[0][0]).to.equal(jenkinsUrl);
@@ -107,11 +112,11 @@ describe('jenkins-builder task', function () {
                 test2: 3
               };
 
-          task.startJenkinsJob({}, {
+          task.startJenkinsJob({}, createOptionsFunction({
             'jenkinsUrl': jenkinsUrl,
             'jobName': jobName,
             'parameters': jobParameters
-          }, callbackSpy);
+          }), callbackSpy);
 
           expect(jenkinsApi.init.called).to.be.ok;
           expect(jenkinsApi.init.args[0][0]).to.equal(jenkinsUrl);
@@ -126,14 +131,14 @@ describe('jenkins-builder task', function () {
           var jenkinsUrl = 'http://example.com',
               jobName = 'testJob';
 
-          task.startJenkinsJob({}, {
+          task.startJenkinsJob({}, createOptionsFunction({
             'jenkinsUrl': jenkinsUrl,
             'jobName': jobName,
             'auth': {
               'username': 'testuser1',
               'password': 'testpss'
             }
-          }, callbackSpy);
+          }), callbackSpy);
 
           expect(jenkinsApi.init.called).to.be.ok;
           expect(jenkinsApi.init.args[0][0]).to.equal('http://testuser1:testpss@example.com');
@@ -147,14 +152,14 @@ describe('jenkins-builder task', function () {
           var jenkinsUrl = 'http://example.com',
               jobName = 'testJob';
 
-          task.startJenkinsJob({}, {
+          task.startJenkinsJob({}, createOptionsFunction({
             'jenkinsUrl': jenkinsUrl,
             'jobName': jobName,
             'auth': {
               'username': 'testuser2',
               'password': 'testpss'
             }
-          }, callbackSpy);
+          }), callbackSpy);
 
           expect(jenkinsApi.init.called).to.be.ok;
           expect(jenkinsApi.init.args[0][0]).to.equal('http://testuser2:testpss@example.com');
