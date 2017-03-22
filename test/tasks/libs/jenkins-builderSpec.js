@@ -36,7 +36,7 @@ describe('jenkins-builder task', function () {
               err = 'ERROR';
             }
 
-            if(typeof(params) === 'function') {
+            if (typeof(params) === 'function') {
               params(err, 'test');
             } else {
               callback(err, 'test');
@@ -58,21 +58,22 @@ describe('jenkins-builder task', function () {
       delete require.cache[taskLocation]
     });
 
-    it('should connect to a jenkins server address passed in by grunt options without parameters- successfully', function () {
-      var jenkinsUrl = 'http://example.com',
-          jobName = 'testJob';
+    it('should connect to a jenkins server address passed in by grunt options without parameters- successfully',
+        function () {
+          var jenkinsUrl = 'http://example.com',
+              jobName = 'testJob';
 
-      task.startJenkinsJob({}, {
-        'jenkinsUrl': jenkinsUrl,
-        'jobName': jobName
-      }, callbackSpy);
+          task.startJenkinsJob({}, {
+            'jenkinsUrl': jenkinsUrl,
+            'jobName': jobName
+          }, callbackSpy);
 
-      expect(jenkinsApi.init.called).to.be.ok;
-      expect(jenkinsApi.init.args[0][0]).to.equal(jenkinsUrl);
+          expect(jenkinsApi.init.called).to.be.ok;
+          expect(jenkinsApi.init.args[0][0]).to.equal(jenkinsUrl);
 
-      expect(buildSpy.called).to.be.ok;
-      expect(buildSpy.args[0][0]).to.equal(jobName);
-    });
+          expect(buildSpy.called).to.be.ok;
+          expect(buildSpy.args[0][0]).to.equal(jobName);
+        });
 
     it('should connect to a jenkins server address passed in by grunt options without parameters - fail', function () {
       var jenkinsUrl = 'http://example.com',
@@ -97,27 +98,69 @@ describe('jenkins-builder task', function () {
       expect(buildSpy.args[0][0]).to.equal(jobName);
     });
 
-    it('should connect to a jenkins server address passed in by grunt options with parameters - successfully', function () {
-      var jenkinsUrl = 'http://example.com',
-          jobName = 'testJob',
-          jobParameters = {
-            test: 1,
-            test2: 3
-          };
+    it('should connect to a jenkins server address passed in by grunt options with parameters - successfully',
+        function () {
+          var jenkinsUrl = 'http://example.com',
+              jobName = 'testJob',
+              jobParameters = {
+                test: 1,
+                test2: 3
+              };
 
-      task.startJenkinsJob({}, {
-        'jenkinsUrl': jenkinsUrl,
-        'jobName': jobName,
-        'parameters': jobParameters
-      }, callbackSpy);
+          task.startJenkinsJob({}, {
+            'jenkinsUrl': jenkinsUrl,
+            'jobName': jobName,
+            'parameters': jobParameters
+          }, callbackSpy);
 
-      expect(jenkinsApi.init.called).to.be.ok;
-      expect(jenkinsApi.init.args[0][0]).to.equal(jenkinsUrl);
+          expect(jenkinsApi.init.called).to.be.ok;
+          expect(jenkinsApi.init.args[0][0]).to.equal(jenkinsUrl);
 
-      expect(buildSpy.called).to.be.ok;
-      expect(buildSpy.args[0][0]).to.equal(jobName);
-      expect(buildSpy.args[0][1]).to.equal(jobParameters);
-    });
+          expect(buildSpy.called).to.be.ok;
+          expect(buildSpy.args[0][0]).to.equal(jobName);
+          expect(buildSpy.args[0][1]).to.equal(jobParameters);
+        });
 
+    it('should connect to a jenkins server address passed in by grunt options with auth testuser1 - successfully',
+        function () {
+          var jenkinsUrl = 'http://example.com',
+              jobName = 'testJob';
+
+          task.startJenkinsJob({}, {
+            'jenkinsUrl': jenkinsUrl,
+            'jobName': jobName,
+            'auth': {
+              'username': 'testuser1',
+              'password': 'testpss'
+            }
+          }, callbackSpy);
+
+          expect(jenkinsApi.init.called).to.be.ok;
+          expect(jenkinsApi.init.args[0][0]).to.equal('http://testuser1:testpss@example.com');
+
+          expect(buildSpy.called).to.be.ok;
+          expect(buildSpy.args[0][0]).to.equal(jobName);
+        });
+
+    it('should connect to a jenkins server address passed in by grunt options with auth testuser2 - successfully',
+        function () {
+          var jenkinsUrl = 'http://example.com',
+              jobName = 'testJob';
+
+          task.startJenkinsJob({}, {
+            'jenkinsUrl': jenkinsUrl,
+            'jobName': jobName,
+            'auth': {
+              'username': 'testuser2',
+              'password': 'testpss'
+            }
+          }, callbackSpy);
+
+          expect(jenkinsApi.init.called).to.be.ok;
+          expect(jenkinsApi.init.args[0][0]).to.equal('http://testuser2:testpss@example.com');
+
+          expect(buildSpy.called).to.be.ok;
+          expect(buildSpy.args[0][0]).to.equal(jobName);
+        });
   });
 });

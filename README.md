@@ -49,5 +49,10 @@ Default value: `test-job-1`
 
 the name of the job you wish to run.
 
+#### options.auth
+Type: `{username: 'String', password: 'String'}`
+
+Optional property is you need auth with Jenkins.
+
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
