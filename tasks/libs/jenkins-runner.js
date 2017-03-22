@@ -7,7 +7,7 @@ function buildAuthUrl(url, username, password) {
   var protocolRegExp = /https:\/\/|http:\/\//,
       protocol = '';
 
-  if (url.indexOf('http') > -1) {
+  if (protocolRegExp.test(url)) {
     protocol = protocolRegExp.exec(url)[0];
     url = url.replace(protocolRegExp, '');
   }
